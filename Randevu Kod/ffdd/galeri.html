@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri - Mamos The Barber</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { overflow-x: hidden; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), url('images/anabg.jpeg') no-repeat center center/cover;
+      background-attachment: fixed;
+      color: white;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      z-index: 999;
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo img { height: 50px; border-radius: 10px; }
+    .logo span { font-size: 26px; font-weight: bold; }
+
+    nav { display: flex; gap: 25px; }
+    nav a {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      padding: 6px 10px;
+      transition: 0.3s;
+    }
+    nav a i { margin-right: 6px; }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background-color: #f1c40f;
+      transition: 0.3s ease;
+    }
+    nav a:hover::after { width: 100%; }
+
+    .menu-toggle {
+      display: none;
+      font-size: 28px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      nav {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: rgba(0,0,0,0.9);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px 30px;
+        display: none;
+      }
+      nav.show { display: flex; }
+      nav a { width: 100%; padding: 10px 0; }
+    }
+
+    main { padding: 130px 30px 60px; }
+    h1 { text-align: center; font-size: 32px; margin-bottom: 30px; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-item {
+      overflow: hidden;
+      border-radius: 10px;
+      transform: translateY(50px);
+      opacity: 0;
+      transition: 0.8s ease;
+      cursor: pointer;
+    }
+
+    .gallery-item.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .lightbox.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      font-size: 40px;
+      color: white;
+      cursor: pointer;
+      z-index: 10000;
+    }
+
+    footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 0;
+      flex-wrap: wrap;
+      margin-top: 50px;
+    }
+
+    footer a {
+      color: white;
+      font-size: 24px;
+      transition: 0.3s;
+    }
+
+    footer a:hover {
+      color: #f1c40f;
+    }
+
+    @media (max-width: 768px) {
+      main { padding: 100px 20px 40px; }
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="images/logo.jpg" alt="Logo" />
+      <span>Mamos The Barber</span>
+    </div>
+    <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+    <nav id="nav">
+      <a href="index.html"><i class="fas fa-home"></i> Ana Sayfa</a>
+      <a href="galeri.html"><i class="fas fa-image"></i> Galeri</a>
+      <a href="iletisim.html"><i class="fas fa-envelope"></i> İletişim</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Galeri</h1>
+    <div class="gallery" id="gallery">
+      <!-- Tüm resimler buraya geliyor -->
+      <!-- A etiketi kaldırıldı çünkü lightbox ile büyütülecek -->
+      <!-- Daha fazla resim varsa aynı yapıda eklenebilir -->
+      <div class="gallery-item"><img src="images/sac1.png" alt="Saç Modeli 1"></div>
+      <div class="gallery-item"><img src="images/sac2.png" alt="Saç Modeli 2"></div>
+      <div class="gallery-item"><img src="images/sac3.png" alt="Saç Modeli 3"></div>
+      <div class="gallery-item"><img src="images/sac4.png" alt="Saç Modeli 4"></div>
+      <div class="gallery-item"><img src="images/sac5.png" alt="Saç Modeli 5"></div>
+      <div class="gallery-item"><img src="images/sac6.png" alt="Saç Modeli 6"></div>
+      <div class="gallery-item"><img src="images/sac7.png" alt="Saç Modeli 7"></div>
+      <div class="gallery-item"><img src="images/sac8.png" alt="Saç Modeli 8"></div>
+      <div class="gallery-item"><img src="images/sac9.png" alt="Saç Modeli 9"></div>
+      <div class="gallery-item"><img src="images/sac10.png" alt="Saç Modeli 10"></div>
+      <div class="gallery-item"><img src="images/sac11.png" alt="Saç Modeli 11"></div>
+      <div class="gallery-item"><img src="images/sac12.png" alt="Saç Modeli 12"></div>
+      <div class="gallery-item"><img src="images/sac13.png" alt="Saç Modeli 13"></div>
+      <div class="gallery-item"><img src="images/sac14.png" alt="Saç Modeli 14"></div>
+      <div class="gallery-item"><img src="images/sac15.png" alt="Saç Modeli 15"></div>
+      <div class="gallery-item"><img src="images/sac16.png" alt="Saç Modeli 16"></div>
+      <div class="gallery-item"><img src="images/sac17.png" alt="Saç Modeli 17"></div>
+      <div class="gallery-item"><img src="images/sac18.png" alt="Saç Modeli 18"></div>
+      <div class="gallery-item"><img src="images/sac19.png" alt="Saç Modeli 19"></div>
+      <div class="gallery-item"><img src="images/sac20.png" alt="Saç Modeli 20"></div>
+
+    </div>
+  </main>
+
+  <!-- Lightbox HTML -->
+  <div id="lightbox" class="lightbox">
+    <span class="close-btn">&times;</span>
+    <img class="lightbox-img" src="" alt="Büyük Resim">
+  </div>
+
+  <footer>
+    <a href="https://www.instagram.com/musazade_erkan?igsh=eXpoazZubG91cHl4" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://wa.me/90XXXXXXXXXX" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://maps.app.goo.gl/zQssVsBzjFzXq1Aa6" target="_blank"><i class="fas fa-map-marker-alt"></i></a>
+  </footer>
+
+  <script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const nav = document.getElementById('nav');
+
+    toggleBtn.addEventListener('click', () => {
+      nav.classList.toggle('show');
+    });
+
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.2 });
+    galleryItems.forEach(item => observer.observe(item));
+
+    // Lightbox JS
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.querySelector('.lightbox-img');
+    const closeBtn = document.querySelector('.close-btn');
+
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('show');
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      lightbox.classList.remove('show');
+    });
+
+    lightbox.addEventListener('click', e => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
