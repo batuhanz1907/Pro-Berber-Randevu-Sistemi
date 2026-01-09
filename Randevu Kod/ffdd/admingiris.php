@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $kullanici = $_POST['kullanici'];
     $sifre = $_POST['sifre'];
 
-    if ($kullanici == "admin" && $sifre == "30adminerkan30") {
+    if ($kullanici == "admin" && $sifre == "denemegiris07") {
         $_SESSION['admin'] = true;
         header("Location: kontrolpaneli.php");
         exit();
